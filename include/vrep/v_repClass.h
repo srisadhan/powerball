@@ -1,7 +1,10 @@
 #ifndef V_REPCLASS_H
 #define V_REPCLASS_H
 
+#include "v_repConst.h"
 #include "TooN/TooN.h"
+#include <stdio.h>
+
 extern "C" {
     #include "extApi.h"
 /*	#include "extApiCustom.h" if you wanna use custom remote API functions! */
@@ -105,6 +108,21 @@ class V_rep {
             *joint_angle = angles;
         }
 
+        void loadScene(const char* scenePathAndName)
+        {   
+            simxInt scene_status = simxLoadScene(clientID, scenePathAndName, 0, simx_opmode_oneshot_wait);
+
+            if (scene_status != simx_return_ok) 
+                std::cout << "Unable to load V-rep scene" << std::endl;
+        }
+
+        void startVrepSimulation(){
+            simxStartSimulation(clientID, simx_opmode_oneshot_wait);
+        } 
+
+        void stopVrepSimulation(){
+            simxStopSimulation(clientID, simx_opmode_oneshot_wait);
+        } 
 
     private:
 

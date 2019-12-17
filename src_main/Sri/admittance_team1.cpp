@@ -16,6 +16,7 @@
 #include "powerball/schunk_powerball.h"
 #include "vrep/v_repClass.h"
 #include "powerball/schunk_kinematics.h"
+#include "utils/utils.h"
 
 // Toon headers
 #include <TooN/LU.h>
@@ -44,28 +45,6 @@ namespace plt = matplotlibcpp;
 namespace
 {
   commonOptions::Option<std::vector<std::string>> cnfDevice("usb2dyn.device", {"/dev/ttyUSB0", "/dev/ttyUSB1", "/dev/ttyUSB2"}, "device for usb2BaccaratDealer");
-}
-// code for color display in the terminal
-namespace Color {
-    enum Code {
-        FG_RED      = 31,
-        FG_GREEN    = 32,
-        FG_BLUE     = 34,
-        FG_DEFAULT  = 39,
-        BG_RED      = 41,
-        BG_GREEN    = 42,
-        BG_BLUE     = 44,
-        BG_DEFAULT  = 49
-    };
-    class Modifier {
-        Code code;
-    public:
-        Modifier(Code pCode) : code(pCode) {}
-        friend std::ostream&
-        operator<<(std::ostream& os, const Modifier& mod) {
-            return os << "\033[" << mod.code << "m";
-        }
-    };
 }
 
 Color::Modifier red(Color::FG_RED);

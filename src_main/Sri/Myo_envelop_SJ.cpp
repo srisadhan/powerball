@@ -11,35 +11,13 @@
 #include "matplotlibcpp.h"
 #include "sigpack.h"
 #include <armadillo>
+#include "utils/utils.h"
 
 using namespace myolinux;
 using namespace std;
 using namespace std::chrono;
 using namespace TooN;
 namespace plt = matplotlibcpp;
-
-// code for color display in the terminal
-namespace Color {
-    enum Code {
-        FG_RED      = 31,
-        FG_GREEN    = 32,
-        FG_BLUE     = 34,
-        FG_DEFAULT  = 39,
-        BG_RED      = 41,
-        BG_GREEN    = 42,
-        BG_BLUE     = 44,
-        BG_DEFAULT  = 49
-    };
-    class Modifier {
-        Code code;
-    public:
-        Modifier(Code pCode) : code(pCode) {}
-        friend std::ostream&
-        operator<<(std::ostream& os, const Modifier& mod) {
-            return os << "\033[" << mod.code << "m";
-        }
-    };
-}
 
 Color::Modifier red(Color::FG_RED);
 Color::Modifier green(Color::FG_GREEN);

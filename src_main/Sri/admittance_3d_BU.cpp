@@ -13,6 +13,7 @@
 #include "powerball/schunk_kinematics.h"
 #include <TooN/LU.h>
 #include <TooN/SVD.h>
+#include "utils/utils.h"
 
 #include "myolinux/myoclient.h" // myo band headers
 #include "myolinux/serial.h"
@@ -24,28 +25,6 @@ using boost::asio::ip::tcp;
 using namespace::TooN;
 using namespace myolinux;
 
-
-namespace Color {
-    enum Code {
-        FG_RED      = 31,
-        FG_GREEN    = 32,
-        FG_BLUE     = 34,
-        FG_DEFAULT  = 39,
-        BG_RED      = 41,
-        BG_GREEN    = 42,
-        BG_BLUE     = 44,
-        BG_DEFAULT  = 49
-    };
-    class Modifier {
-        Code code;
-    public:
-        Modifier(Code pCode) : code(pCode) {}
-        friend std::ostream&
-        operator<<(std::ostream& os, const Modifier& mod) {
-            return os << "\033[" << mod.code << "m";
-        }
-    };
-}
 
 Color::Modifier red(Color::FG_RED);
 Color::Modifier green(Color::FG_GREEN);

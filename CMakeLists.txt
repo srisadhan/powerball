@@ -7,6 +7,7 @@ project(Powerball)
 # set include drectories - this is the directory, from which cmake was started, i.e. the top level source directory
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/include/vrep)
+include_directories(${CMAKE_SOURCE_DIR}/include/powerball)
 include_directories(${CMAKE_SOURCE_DIR}/include/ximu)
 include_directories(${CMAKE_SOURCE_DIR}/include/utils)
 include_directories(${CMAKE_SOURCE_DIR}/include/dynamixel)
@@ -62,6 +63,7 @@ link_directories(${Boost_LIBRARY_DIR})
 find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
 find_package(PythonLibs 2.7)
+find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 include_directories(PRIVATE ${PYTHON_INCLUDE_DIRS})
 
 #find sdl library
@@ -147,6 +149,14 @@ target_link_libraries(robot_vrep_sim schunk_powerball schunk_kinematics extApi e
 add_executable(robot_traj src_main/Sri/robot_traj.cpp)
 target_link_libraries(robot_traj schunk_powerball schunk_kinematics extApi extApiPlatform pthread myolinux dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
 
+add_executable(admittance_velMode_Amir_IEEE_haptics src_main/admittance_velMode_Amir_IEEE_haptics.cpp)
+target_link_libraries(admittance_velMode_Amir_IEEE_haptics schunk_powerball schunk_kinematics extApi extApiPlatform pthread myolinux  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
+
+add_executable(admittance_velMode_Amir_practice src_main/admittance_velMode_Amir_practice.cpp)
+target_link_libraries(admittance_velMode_Amir_practice schunk_powerball schunk_kinematics extApi extApiPlatform pthread myolinux  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
+
+add_executable(pos_from_joint_angles src_main/pos_from_joint_angles.cpp)
+target_link_libraries(pos_from_joint_angles schunk_kinematics)
 
 #add_executable(file_input_pb_vrep src_main/file_input_pb_vrep.cpp)
 #target_link_libraries(file_input_pb_vrep schunk_powerball extApi extApiPlatform pthread)
