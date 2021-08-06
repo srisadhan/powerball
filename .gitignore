@@ -1,0 +1,12 @@
+# C extensions
+*.so
+
+# VS Code
+.vscode/
+
+# exclude data from source control by default
+bin/
+build/
+CMakeFiles/
+yaml-cpp/
+data/

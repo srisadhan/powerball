@@ -52,3 +52,22 @@ iface enp2s0 inet static
 replace the en01, enp2s0 to the ethernet adapters recognized on your computer using 'ifconfig'
 
 For more information, please check: https://stackoverflow.com/questions/42922949/two-wired-connection-at-the-same-time
+
+
+# How to include dynamixel libraries in your own projects
+ - Install dynamixel sdk
+ - place the "DynamixelSDK/c++/include" folder in your current project or include the directory "/usr/local/include/dynamixel_sdk" in your project
+ - Run the following command 
+```
+g++ read_write.cpp -o read_write -ldxl_x64_cpp -lrt -I include/dynamixel_sdk
+
+(or)
+
+g++ read_write.cpp -o read_write -ldxl_x64_cpp -lrt -I <dynamixel include files>
+```
+
+The linking libraries are -lrt (for multi-threading) and -dxl_x64_cpp (dynamixel libraries)
+
+
+
+

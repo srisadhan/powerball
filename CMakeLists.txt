@@ -140,8 +140,11 @@ target_link_libraries(hitting_hammer schunk_powerball schunk_kinematics extApi e
 add_executable(egg_collision src_main/egg_collision.cpp)
 target_link_libraries(egg_collision schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES})
 
-add_executable(gripper src_main/Sri/gripper.cpp)
-target_link_libraries(gripper schunk_powerball schunk_kinematics extApi extApiPlatform pthread myolinux dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
+add_executable(gripper_force_control src_main/Sri/gripper_force_control.cpp)
+target_link_libraries(gripper_force_control schunk_powerball schunk_kinematics extApi extApiPlatform pthread myolinux dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
+
+add_executable(gripper_calibration src_main/Sri/gripper_calibration.cpp)
+target_link_libraries(gripper_calibration schunk_powerball schunk_kinematics extApi extApiPlatform dynamixel phidget21 pthread ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
 
 add_executable(robot_vrep_sim src_main/Sri/robot_vrep_sim.cpp)
 target_link_libraries(robot_vrep_sim schunk_powerball schunk_kinematics extApi extApiPlatform pthread ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
@@ -157,6 +160,27 @@ target_link_libraries(admittance_velMode_Amir_practice schunk_powerball schunk_k
 
 add_executable(pos_from_joint_angles src_main/pos_from_joint_angles.cpp)
 target_link_libraries(pos_from_joint_angles schunk_kinematics)
+
+add_executable(hammer_ICRA src_main/hammer_ICRA.cpp)
+target_link_libraries(hammer_ICRA schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+add_executable(force_model_AB src_main/Sri/force_model_AB.cpp)
+target_link_libraries(force_model_AB schunk_powerball schunk_kinematics extApi extApiPlatform pthread  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+add_executable(traj_KG src_main/Sri/traj_KG.cpp)
+target_link_libraries(traj_KG schunk_powerball schunk_kinematics extApi extApiPlatform pthread  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+add_executable(admittance_collision_exp src_main/Sri/admittance_collision_exp.cpp)
+target_link_libraries(admittance_collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES})
+
+add_executable(hammer_before_intern src_main/Sri/hammer_before_intern.cpp)
+target_link_libraries(hammer_before_intern schunk_powerball schunk_kinematics extApi extApiPlatform pthread  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+add_executable(collision_exp src_main/Sri/collision_exp.cpp)
+target_link_libraries(collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+add_executable(warmup src_main/identification/warmup.cpp)
+target_link_libraries(warmup schunk_powerball schunk_kinematics extApi extApiPlatform pthread ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
 
 #add_executable(file_input_pb_vrep src_main/file_input_pb_vrep.cpp)
 #target_link_libraries(file_input_pb_vrep schunk_powerball extApi extApiPlatform pthread)
@@ -188,6 +212,8 @@ target_link_libraries(pos_from_joint_angles schunk_kinematics)
 #add_executable(cooperation_imu_follower_vrep src_main/cooperation_imu_follower_vrep.cpp)
 #target_link_libraries(cooperation_imu_follower_vrep schunk_powerball extApi extApiPlatform pthread ximu SDL_mixer SDL ${Boost_LIBRARIES})
 
+add_executable(admittance_test src_main/Sri/admittance_test.cpp)
+target_link_libraries(admittance_test schunk_powerball schunk_kinematics extApi extApiPlatform ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
 ######### Experiments ##########
 #add_executable(trust1_pb src_main/trust1_pb.cpp)
 #target_link_libraries(trust1_pb schunk_powerball extApi extApiPlatform pthread ximu SDL_mixer SDL ${Boost_LIBRARIES})

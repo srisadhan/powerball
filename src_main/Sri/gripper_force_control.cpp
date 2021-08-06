@@ -47,7 +47,7 @@ using boost::asio::ip::tcp;
 
 // global vars
 Vector<6,float> FT;
-const double resolution = 300*M_PI*25.46e-3/180/1023;
+const double resolution = 300*M_PI*25.46e-3/180/1024;
 const double magWidth = 0.022; // width of the magnet holder
 const double forceThres = 2*1.5; // force threshold on the object
 const double dt = 0.005; // sampling time
