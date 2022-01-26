@@ -17,6 +17,7 @@ class SchunkPowerball {
         //--- Node functions
         void init_comm();
         void set_control_mode(int8_t mode);
+        uint32_t get_control_mode(); // added by Sri
         bool set_sdo_controlword(uint8_t node_num, int16_t state);  // By sdo
         //---
 

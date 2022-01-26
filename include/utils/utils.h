@@ -65,6 +65,13 @@ namespace Color {
     };
 }
 
+#if defined(__linux__)
+  //the following are UBUNTU/LINUX ONLY terminal color codes.
+    #define DEFAULT     "\033[0m"
+    #define RED         "\033[31m"              /* Red */
+    #define GREEN       "\033[32m"              /* Green */
+#endif
+
 #define UNUSED(stuff) (void)(stuff);
 
 #endif

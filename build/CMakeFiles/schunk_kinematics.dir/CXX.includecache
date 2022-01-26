@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/powerball/schunk_kinematics.h
+TooN/TooN.h
+-
+fstream
+-
+istream
+-
+string
+-
+sstream
+-
+vector
+-
+iostream
+-
+boost/array.hpp
+-
+math.h
+-
+
+/home/srisadha/powerball/src/schunk_kinematics.cpp
+powerball/schunk_kinematics.h
+/home/srisadha/powerball/src/powerball/schunk_kinematics.h
+

@@ -77,13 +77,13 @@ int counter = 0;
 int windLen = 50;
 
 // Cartesian admittance parameters_ one time define
-Vector<6,float> Md_diag = makeVector(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f)*0.2f; // for constant m (low multiplier (0.1f) - high mass, high multiplier (0.3f)- low mass)
+Vector<6,float> Md_diag = makeVector(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f)*0.1f; // for constant m (low multiplier (0.1f) - high mass, high multiplier (0.3f)- low mass)
 //Vector<6,float> Md_diag = makeVector(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f)*(1.0f/15.0f); // for var m (min:3.5 max:)
 Matrix<6,6,double> Md_inv = Md_diag.as_diagonal();
 
 //Vector<6,float> Cd_diag = makeVector(1.2f,1.0f,1.0f,1.0f,1.0f,1.0f)*80; // for fine Low
 // Vector<6,float> Cd_diag = makeVector(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f)*25; // for fine High
-Vector<6,float> Cd_diag = makeVector(1.0f,1.0f,1.0f,1.0f,1.0f,1.0f)*190; // for gross Low (multiplier (90) - low damping; multiplier (190) - high damping)
+Vector<6,float> Cd_diag = makeVector(1.0f,1.0f,1.5f,1.0f,1.0f,1.0f)*130; // for gross Low (multiplier (90) - low damping; multiplier (190) - high damping)
 
 // Increase the Mass and damping in the z direction for the VSM
 
@@ -289,10 +289,10 @@ void Myo_receive(bool *errFlag)
 
     // Open recording file
     std::ofstream EMGFile, IMUFile;
-    EMGFile.open("Sri/EMG.csv");
+    EMGFile.open("../data/admittance/EMG.csv");
     EMGFile << "Time,EMG1,EMG2,EMG3,EMG4,EMG5,EMG6,EMG7,EMG8"<< endl;
 
-    IMUFile.open("Sri/  IMU.csv");
+    IMUFile.open("../data/admittance/IMU.csv");
     IMUFile << "Time,ORI1,ORI2,ORI3,ORI4,ACC1,ACC2,ACC3,GYR1,GYR2,GYR3"<< endl;
     while(!*errFlag){
         try {
@@ -329,7 +329,7 @@ void EMG_calib(bool *errFlag)
 
     // Open recording file
     std::ofstream EMGFile, IMUFile;
-    EMGFile.open("Sri/Calib.csv");
+    EMGFile.open("../data/admittance/calib.csv");
     EMGFile << "Time,EMG1,EMG2,EMG3,EMG4,EMG5,EMG6,EMG7,EMG8"<< endl;
 
     while(!*errFlag){
@@ -389,16 +389,30 @@ void EMG_calib(bool *errFlag)
 // ----------------------------Main function------------------------------
 int main(int argc, char** argv)
 {
-  bool dyn_connect = 0; // 1 - if you want to connect to dynamixel else 0
-  bool vrepFlag = true;
-
-  // arg to pass to the code is in the format "sudo ./admittance_3d_velMode vrep arg2 arg3 ..."
-  if (argc>1){
-    if (strcmp(argv[1],"vrep") == 0){
-      vrepFlag = false;
+    bool dyn_connect = 0; // 1 - if you want to connect to dynamixel else 0
+    bool vrepFlag = true;
+    bool Calib_errFlag = true;
+    // arg to pass to the code is in the format "sudo ./admittance_3d_velMode -v/vo arg2 arg3 ..."
+    if (argc>1){
+        if (strcmp(argv[1], "-h") == 0) {
+            printf("Supported arguments in order ./admittance_3d_velMode -v/vo -vsm ...");
+        }else if ((strcmp(argv[1],"-calib") == 0)) {
+            printf("Calibration of EMG using isometric contractions");  
+            Calib_errFlag = false;
+        }else if ( (strcmp(argv[1],"-v") == 0) & (strcmp(argv[1],"-vo") == 0) ) {
+            printf("Applying trajectory on PowerBall and V-rep");  
+            vrepFlag = false;
+        } else {printf("Applying trajectory on PowerBall only");  ;}
+        
+        if (argc > 2){
+            if (strcmp(argv[2], "-vsm") == 0) {
+                printf("Initializing the admittance control for the VSM");
+                dyn_connect = 1;
+            }
+            
+        }
     }
-  }
-
+  
   // timestamp vars
   char buffer[10];
   struct timeval tv;
@@ -409,20 +423,20 @@ int main(int argc, char** argv)
   // Initialize Myo band
   myo::Client client = Myo_init(); // initializing the myo band here works (sometimes it works here and sometimes after initializing the admittance control thread).
 
-  #if 0
   // Muscle activity calibration using the MYO armband
-  bool Calib_errFlag = false;
-  boost::thread Calib_thread(EMG_calib,&Calib_errFlag);
-  cout<< red <<"Relax your muscles while maintaining the hand configuration.."<<def<<endl;
-  usleep(5*1000*1000);
-  cout<< green <<"Get ready to hold the handle firmly"<<def<<endl;
-  usleep(1*1000*1000);
-  cout<< red <<"Now practice high grasp------------"<< def<< endl;
-  usleep(5*1000*1000);
-  cout<<"Calibration completed, you can relax now"<<endl;
-  Calib_errFlag = true;
-  Calib_thread.interrupt();
-  #endif
+  if (Calib_errFlag) {
+    
+    boost::thread Calib_thread(EMG_calib,&Calib_errFlag);
+    cout<< red <<"Relax your muscles while maintaining the hand configuration.."<<def<<endl;
+    usleep(5*1000*1000);
+    cout<< green <<"Get ready to hold the handle firmly"<<def<<endl;
+    usleep(1*1000*1000);
+    cout<< red <<"Now practice high grasp------------"<< def<< endl;
+    usleep(5*1000*1000);
+    cout<<"Calibration completed, you can relax now"<<endl;
+    Calib_errFlag = true;
+    Calib_thread.interrupt();
+  }
 
   // Myo thread for the actual experiment
   bool Myo_errFlag = false;
@@ -443,10 +457,13 @@ int main(int argc, char** argv)
   usleep( 1*1000*1000 );
   #endif
 
+  // Initializing FT sensor
+  bool errFlag=false;
+  boost::thread FT_thread(TCP_receive,&errFlag);
+
   // connect to robot
   SchunkPowerball pb;
   pb.update();
-  Q = pb.get_pos();
 
   // stop by Enter key thread
   bool stop_flag = false;
@@ -454,16 +471,17 @@ int main(int argc, char** argv)
 
 
   // go to start pose
-  // Qe = Data(-0.6992f,-0.2623f,1.4834f,0.0f,1.4363f,-0.6112f); // peg in a hole experiment
-  Qe = Data(0.0f,-0.2623f,1.4834f,0.0f,1.4363f,0.0f); // line traversal
+  // Qe = Data(-0.6992f,-0.2623f,1.4834f,0.0f,1.4363f,-0.6112f); // peg in a hole experiment - old
+  Qe = makeVector(0.0f,-10.0f,95.0f,0.0f,74.0f,0.0f) * M_PI/180; //
+  Q = pb.get_pos();
   Vector<6,float> dQ = Qe-Q;
   float maxq=0;
   for (int n=0;n<6;n++)
   {
       if (abs(dQ[n])>maxq) {maxq=abs(dQ[n]);}
   }
-  float Ttravel = maxq*5;
-  if (Ttravel<1.0){Ttravel=1.0;}
+  float Ttravel = maxq*3;
+//   if (Ttravel<1.0){Ttravel=1.0;}
   int itNum = Ttravel/dt;
   Vector<6,float> Qhold = Q;
   int n = 1;
@@ -472,37 +490,35 @@ int main(int argc, char** argv)
       Vector<6,float> Qt = (1-cos(float(n)/itNum*M_PI))/2 * dQ + Qhold;
       pb.set_pos(Qt);
       pb.update();
-      Q = pb.get_pos();
+      pb.get_pos();
       usleep( dt*1000*1000 );
       n++;
   }
-
+  
   // Get current pose of the robot
   Kin kin;
+  Q = pb.get_pos();
   kin.FK_pos(Q,&X_init);
   // set velocity mode active
+  pb.set_sdo_controlword(NODE_ALL,STATUS_OPERATION_ENABLED);
   pb.set_control_mode(MODES_OF_OPERATION_VELOCITY_MODE);
   pb.update();
 
   // Open recording file
   std::ofstream dataFile;
-  dataFile.open("Sri/admittance.csv");
+  dataFile.open("../data/admittance/admittance.csv");
   dataFile << "Time,Q1,Q2,Q3,Q4,Q5,Q6,dQ1,dQ2,dQ3,dQ4,dQ5,dQ6,FT1,FT2,FT3,FT4,FT5,FT6,SimX,SimY,X,Y" << endl;
-
-  // Initializing FT sensor
-  bool errFlag=false;
-  boost::thread FT_thread(TCP_receive,&errFlag);
 
   cout << "Admittance loop started!" << endl;
   cout<< green << "Start the experiment "<< def <<endl;
 
+//   cout << pb.get_status() << endl;
   Matrix<3,4,float> T_mat;
   while(!stop_flag)
   {
 
     timeLoop = std::chrono::system_clock::now();
     boost::thread threaded_computation(computations);
-
     // velocity saturation
     if (TooN::norm_inf(Qdot)>32.5*M_PI/180)
     {
@@ -532,10 +548,10 @@ int main(int argc, char** argv)
     if ( (dt-elaps_loop.count()) > 0 ) {
         usleep( (dt-elaps_loop.count())*1000*1000 );
     }
-    else {cout << "Communication Time Out!" << endl;}
+    // else {cout << "Communication Time Out!" << endl;}
 
     kin.FK_pos(Q,&X_init);
-    cout << Q <<endl;
+    // cout << Q <<endl;
   }
 
   dataFile.close(); // close file
@@ -545,9 +561,9 @@ int main(int argc, char** argv)
   stop_thread.interrupt();
   vrep_thread.interrupt();
 
-  pb.shutdown_motors();
+//   pb.shutdown_motors();
   pb.update();
-  usleep(200*1000);
+//   usleep(200*1000);
   cout << "Exiting ..." << endl;
 
 }

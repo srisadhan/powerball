@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../lib/libschunk_powerball.a  CMakeFiles/schunk_powerball.dir/src/schunk_powerball.cpp.o CMakeFiles/schunk_powerball.dir/src/schunk_powerball_state_fcns.cpp.o CMakeFiles/schunk_powerball.dir/src/schunk_powerball_accessors.cpp.o CMakeFiles/schunk_powerball.dir/src/powerball_utils.cpp.o
+/usr/bin/ranlib ../../lib/libschunk_powerball.a

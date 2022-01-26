@@ -1,7 +1,7 @@
 # C++ library for schunk powerball lwa4p (linux)
 ### contributor: Amir Memar
 
-
+- Description of files can be found in [docs/file_description.md](docs/file_description.md)
 # Required libraries
 ### Hardware
 - ntcan (CAN-USB) : https://esd.eu/en 
@@ -52,3 +52,44 @@ iface enp2s0 inet static
 replace the en01, enp2s0 to the ethernet adapters recognized on your computer using 'ifconfig'
 
 For more information, please check: https://stackoverflow.com/questions/42922949/two-wired-connection-at-the-same-time
+
+
+# How to include dynamixel libraries in your own projects
+ - Install dynamixel sdk
+ - place the "DynamixelSDK/c++/include" folder in your current project or include the directory "/usr/local/include/dynamixel_sdk" in your project 
+ - Run the following command
+```
+g++ read_write.cpp -o read_write -ldxl_x64_cpp -lrt -I include/dynamixel_sdk
+
+(or)
+
+g++ read_write.cpp -o read_write -ldxl_x64_cpp -lrt -I <dynamixel_include_files>
+```
+
+The linking libraries are -lrt (for multi-threading) and -ldxl_x64_cpp (dynamixel libraries)
+
+# How to improve the dynamixel communication frequency
+### The communication frequency is throttled by the latency_timer parameter in **port_handler_linux.cpp** - (default value is listed at 16 above ubuntu 16.04)
+
+**Change this value to "0" to increase the communication frequency** - currently the best I can achieve is 200 Hz for a single dynamixel
+
+Follow the following instructions (also listed in **port_handler_linux.cpp**) in the terminal to set the latency_timer automatically:
+```
+$ echo ACTION==\"add\", SUBSYSTEM==\"usb-serial\", DRIVER==\"ftdi_sio\", ATTR{latency_timer}=\"0\" > 99-dynamixelsdk-usb.rules
+$ sudo cp ./99-dynamixelsdk-usb.rules /etc/udev/rules.d/
+$ sudo udevadm control --reload-rules
+$ sudo udevadm trigger --action=add
+$ cat /sys/bus/usb-serial/devices/ttyUSB0/latency_timer
+```
+If you are getting RxTx errors and observe a lot of timeout errors on the dynamixel. It is sometimes a good practice to use the recovery tool from the dynamixel wizard and hope it resolves the issue. 
+
+# 11/14/21 Added Robotiq FT-300 sensor support 
+There are 3 files included in the "powerball/include/robotiq_ft_sensor folder":
+  - rq_int.h
+  - rq_sensor_com.h
+  - rq_sensor_state.h
+
+and, 2 files included in the "powerball/src":
+  - rq_sensor_com.cpp
+  - rq_sensor_state.cpp
+  

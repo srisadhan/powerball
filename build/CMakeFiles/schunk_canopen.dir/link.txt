@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libschunk_canopen.a  CMakeFiles/schunk_canopen.dir/src/schunk_canopen.cpp.o CMakeFiles/schunk_canopen.dir/src/schunk_canopen_io.cpp.o
+/usr/bin/ranlib ../lib/libschunk_canopen.a

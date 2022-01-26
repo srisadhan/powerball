@@ -1,0 +1,15 @@
+# Experiment 1 : same end-effector position but different joint configuration
+sudo ./traj_Qs_Qe -vo 20
+sudo ./traj_Qs_Qe -v 20
+
+# Experiment 2 : Cartesian trajectory tracking (Task space) circle
+sudo ./traj_KJ_circle -vo
+sudo ./traj_KJ_circle -v
+
+# Experiment 3 : Cartesian trajectory tracking (Task space) circle on a plane 
+sudo ./traj_KJ_circle_plane -vo
+sudo ./traj_KJ_circle_plane -v
+
+# Experiment 4 : admittance control 
+sudo ./pHRI_experiment 350 ld
+sudo ./pHRI_experiment 350 hd

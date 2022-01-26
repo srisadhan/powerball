@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libdynamixel.a  CMakeFiles/dynamixel.dir/src/utils.cpp.o CMakeFiles/dynamixel.dir/src/USB2Dynamixel.cpp.o
+/usr/bin/ranlib ../lib/libdynamixel.a

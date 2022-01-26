@@ -23,7 +23,9 @@ int main(int argc, char **argv) {
     TooN::Vector<Dynamic,float> tor_meas(it);
 
     pb.update();
-
+    pb.goHome();
+    pb.update();
+    
     // Set trajectory
     TooN::Vector<6, float> q, q_0;
     q_0 = pb.get_pos();
@@ -38,8 +40,8 @@ int main(int argc, char **argv) {
     TooN::Vector<6,float> w = Zeros;
      float actual_pos, actual_vel, actual_tor;
 
-    A = makeVector(0.0, 0.0, 0.0, 0.0, 70.0, 0.0)*M_PI/180.0;
-    f = makeVector(1.0/tf,1.25/tf,-1.5/tf,osc/tf,osc/tf,2.6/tf);
+    A = makeVector(20.0, 20.0, 0.0, 0.0, 45.0, 0.0)*M_PI/180.0; // makeVector(0.0, 0.0, 0.0, 0.0, 70.0, 0.0)*M_PI/180.0;
+    f = makeVector(10.0/tf,10/tf,-1.5/tf,osc/tf,osc/tf,2.6/tf); // makeVector(1.0/tf,1.25/tf,-1.5/tf,osc/tf,osc/tf,2.6/tf);
     w = 2.0*M_PI*f;
 
     int n = 0;
@@ -48,7 +50,10 @@ int main(int argc, char **argv) {
     while(i*Ts<tf) {
 
 
-        q[4] = q_0[4] + A[4]*(1-cos(w[4]*i*Ts));
+        // q[4] = q_0[4] + A[4]*(1-cos(w[4]*i*Ts)); // movement of joint 4
+        // q[1] = q_0[1] + A[1]*(1-cos(w[1]*i*Ts)); // movement of joint 2
+        q[0] = q_0[0] + A[0]*(1-cos(w[0]*i*Ts)); // movement of joint 1
+
         pb.set_pos(q);
         pb.update();
         i++;

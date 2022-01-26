@@ -109,7 +109,6 @@ void Kin::FK_T(Vector<6,float> Q,  Matrix<3,4,float> *T)
 
 }
 
-
 void Kin::FK_R(Vector<6,float> Q,  Matrix<3,3,float> *T)
 {
 
@@ -128,7 +127,6 @@ void Kin::FK_R(Vector<6,float> Q,  Matrix<3,3,float> *T)
     *T = T_mat;
 
 }
-
 
 int Kin::IK(Matrix<3,4,float> T_mat, Vector<6,float> Qp, Vector<6,float> *Qn)
 {
@@ -360,7 +358,8 @@ void Kin::Jacob(Vector<6,float> Q,  Matrix<6,6,float> *J) {
 
 }
 
-int Kin::HerInter(Vector<6,float> Q1, Vector<6,float> Qd1, Vector<6,float> Q2, float dt, float T, std::vector< std::vector<double> > *matrix)
+// Trajectory planning between two points
+int Kin::HerInter(Vector<6,float> Q1, Vector<6,float> Qd1, Vector<6,float> Q2, float dt, float T_travel, std::vector< std::vector<double> > *matrix)
 {
     // Hermit Interpolation
     Matrix<4,4,float> M_hermit = Data(2,-2, 1, 1, -3, 3, -2, -1, 0, 0, 1, 0, 1, 0, 0, 0);
@@ -369,7 +368,7 @@ int Kin::HerInter(Vector<6,float> Q1, Vector<6,float> Qd1, Vector<6,float> Q2, f
     G[1] = Q2;
     G[2] = Qd1;
 
-    float dt_speed = dt/T;    // Speed factor : dt/(scale 1 sec to this)
+    float dt_speed = dt/T_travel;    // Speed factor : dt/(scale 1 sec to this)
     float t = 0;
     int i=0;
     // clear first

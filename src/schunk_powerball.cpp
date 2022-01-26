@@ -327,7 +327,16 @@ void SchunkPowerball::commutation_search(uint8_t CANid) {
 
 }
 
+// added by Sri 
+uint32_t SchunkPowerball::get_control_mode()
+{
+    uint32_t mode; 
 
+    for (int k=NODE_1; k<= NODE_6; k++) {
+        mode = canopen.SDOread(k,MODES_OF_OPERATION_DISPLAY);
+    }
+    return mode;
+}
 
 
 

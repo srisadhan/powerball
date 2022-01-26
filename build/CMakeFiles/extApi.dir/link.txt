@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libextApi.a  CMakeFiles/extApi.dir/remoteApi/extApi.c.o
+/usr/bin/ranlib ../lib/libextApi.a

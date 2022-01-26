@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../lib/libschunk_kinematics.a  CMakeFiles/schunk_kinematics.dir/src/schunk_kinematics.cpp.o
+/usr/bin/ranlib ../../lib/libschunk_kinematics.a

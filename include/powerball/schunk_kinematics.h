@@ -38,7 +38,7 @@ public:
 
     void Jacob(Vector<6,float> Q,  Matrix<6,6,float> *J);
 
-    int HerInter(Vector<6,float> Q1, Vector<6,float> Qd1, Vector<6,float> Q2, float dt, float T, std::vector< std::vector<double> > *matrix);
+    int HerInter(Vector<6,float> Q1, Vector<6,float> Qd1, Vector<6,float> Q2, float dt, float T_travel, std::vector< std::vector<double> > *matrix);
     // output is the number of rows
 
 
