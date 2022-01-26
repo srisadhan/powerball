@@ -1,4 +1,4 @@
-## **src_main/VSM/** folder 
+# **src_main/Sri/VSM/** folder 
 This particular folder has 3 folders 
     - collision: 
         - straight_line_collision.cpp: file for the experiment to perform straight line collision and observe the impact force on the environment with and without VSM
